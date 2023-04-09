@@ -1,15 +1,30 @@
-import { useFormik } from 'formik';
-import { Button, Form } from 'react-bootstrap';
+import {useFormik} from 'formik';
+import {Button, Form} from 'react-bootstrap';
 import loginImage from '../assets/login_image.jpg';
+import paths from "../paths";
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
+import {useState} from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [isAuthFailed, setIsAuthFailed] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
     onSubmit: async (values) => {
-      console.log(values)
+      setIsAuthFailed(false);
+      try {
+        const res = await axios.post(paths.api.loginPath, values);
+        localStorage.setItem('userData', JSON.stringify(res.data));
+        navigate('/');
+      } catch (err) {
+        console.error(err);
+        setIsAuthFailed(true);
+      }
     },
   });
 
@@ -35,6 +50,7 @@ const Login = () => {
                   id="username"
                   autoComplete="username"
                   required
+                  isInvalid={isAuthFailed}
                   placeholder="Ваш ник"
                 />
                 <label htmlFor="username">Ваш ник</label>
@@ -48,9 +64,13 @@ const Login = () => {
                   id="password"
                   autoComplete="current-password"
                   required
+                  isInvalid={isAuthFailed}
                   placeholder="Пароль"
                 />
                 <Form.Label htmlFor="password">Пароль</Form.Label>
+                {isAuthFailed && <Form.Control.Feedback type="invalid" tooltip>
+                  Неверные имя пользователя или пароль
+                </Form.Control.Feedback>}
               </Form.Group>
               <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
             </Form>
