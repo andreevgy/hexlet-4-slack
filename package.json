@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/andreevgy/frontend-project-12#readme",
   "dependencies": {
-    "@hexlet/chat-server": "^1.1.6"
+    "@hexlet/chat-server": "^1.1.6",
+    "bootstrap": "^5.2.3"
   }
 }
