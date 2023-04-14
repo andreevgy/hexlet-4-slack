@@ -6,6 +6,7 @@ import {
 import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
 import ChatPage from "./screens/ChatPage";
+import Register from "./screens/Register";
 import UserContextProvider from "./components/UserContextProvider";
 
 const App = () => (
@@ -13,6 +14,7 @@ const App = () => (
     <Router>
       <div className="d-flex flex-column h-100">
         <Routes>
+          <Route path="/signup" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<ChatPage />} />
           <Route path="*" element={<NotFound />} />
