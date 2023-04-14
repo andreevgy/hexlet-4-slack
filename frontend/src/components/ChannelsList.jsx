@@ -1,9 +1,15 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Channel from "./Channel";
+import { actions } from "../state";
 
 const ChannelsList = () => {
   const { channels, currentChannelId } = useSelector((state) => state.channelsState);
+  const dispatch = useDispatch();
+
+  const handleChooseChannel = (channelId) => () => {
+    dispatch(actions.setCurrentChannel({ channelId }));
+  };
 
   return (
     <>
@@ -19,6 +25,7 @@ const ChannelsList = () => {
             key={channel.id}
             channel={channel}
             isCurrent={channel.id === currentChannelId}
+            handleChoose={handleChooseChannel(channel.id)}
           />
         ))}
       </ul>
