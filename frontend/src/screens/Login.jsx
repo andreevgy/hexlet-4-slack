@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import paths from "../paths";
 import loginImage from "../assets/login_image.jpg";
+import { useUserContext } from "../contexts/userContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const [isAuthFailed, setIsAuthFailed] = useState(false);
+  const { logIn } = useUserContext();
 
   const formik = useFormik({
     initialValues: {
@@ -19,7 +21,7 @@ const Login = () => {
       setIsAuthFailed(false);
       try {
         const res = await axios.post(paths.api.loginPath, values);
-        localStorage.setItem("userData", JSON.stringify(res.data));
+        logIn(res.data);
         navigate("/");
       } catch (err) {
         console.error(err);

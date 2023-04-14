@@ -4,29 +4,28 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 import paths from "../paths";
-import { actions } from "../state/slices";
+import { actions } from "../state";
 import ChannelsList from "../components/ChannelsList";
 import ChatBox from "../components/ChatBox";
+import { useUserContext } from "../contexts/userContext";
 
 const ChatPage = () => {
   const dispatch = useDispatch();
   const [fetching, setFetching] = useState(true);
   const navigate = useNavigate();
+  const { getAuthHeader, logOut } = useUserContext();
 
   useEffect(() => {
     setFetching(true);
     const fetchData = async () => {
       try {
-        const userData = JSON.parse(localStorage.getItem("userData"));
         const res = await axios.get(paths.api.dataPath, {
-          headers: {
-            authorization: `Bearer ${userData.token}`,
-          },
+          headers: getAuthHeader(),
         });
         dispatch(actions.setInitialState(res.data));
       } catch (err) {
         if (err.response?.status === 401) {
-          localStorage.removeItem("userData");
+          logOut();
           navigate(paths.app.loginPagePath);
         }
       } finally {
