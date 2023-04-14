@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import leoProfanity from "leo-profanity";
+import { useRollbar } from "@rollbar/react";
 import { useApiContext } from "../contexts/apiContext";
 import { getCurrentChannel } from "../state";
 import { useUserContext } from "../contexts/userContext";
@@ -22,6 +23,7 @@ const NewMessageForm = () => {
       .trim()
       .required(),
   });
+  const rollbar = useRollbar();
 
   const f = useFormik({
     initialValues: { body: "" },
@@ -39,6 +41,7 @@ const NewMessageForm = () => {
         await api.sendMessage(message);
         f.resetForm();
       } catch (err) {
+        rollbar.error(err);
         console.error(err);
       }
       f.setSubmitting(false);

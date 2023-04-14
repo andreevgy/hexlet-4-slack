@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 import paths from "../paths";
 import loginImage from "../assets/login_image.jpg";
 import { useUserContext } from "../contexts/userContext";
@@ -14,6 +15,7 @@ const Login = () => {
   const [isAuthFailed, setIsAuthFailed] = useState(false);
   const { logIn } = useUserContext();
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   const formik = useFormik({
     initialValues: {
@@ -27,8 +29,8 @@ const Login = () => {
         logIn(res.data);
         navigate(paths.app.chatPagePath);
       } catch (err) {
-        console.error(err);
         if (!err.isAxiosError) {
+          rollbar.error(err);
           toast.error(t("errors.unknown"));
           return;
         }
@@ -36,6 +38,7 @@ const Login = () => {
         if (err.response?.status === 401) {
           setIsAuthFailed(true);
         } else {
+          rollbar.error(err);
           toast.error(t("errors.network"));
         }
       }

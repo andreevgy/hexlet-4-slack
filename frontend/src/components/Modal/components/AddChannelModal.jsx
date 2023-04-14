@@ -7,16 +7,18 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import leoProfanity from "leo-profanity";
+import { useRollbar } from "@rollbar/react";
 import { actions, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
-import leoProfanity from "leo-profanity";
 
 const AddChannelModal = ({ handleClose }) => {
   const channels = useSelector(getChannelsNames);
   const api = useApiContext();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   const f = useFormik({
     initialValues: {
@@ -33,10 +35,14 @@ const AddChannelModal = ({ handleClose }) => {
         toast.success(t("channels.created"));
         handleClose();
       } catch (e) {
+        rollbar.error(e);
         setSubmitting(false);
         if (e.name === "ValidationError") {
           f.values.name = filteredName;
           setStatus(e.message);
+        } else if (!e.isAxiosError) {
+          rollbar.error(e);
+          throw e;
         }
       }
     },

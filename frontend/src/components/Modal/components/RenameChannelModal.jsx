@@ -8,6 +8,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import leoProfanity from "leo-profanity";
+import { useRollbar } from "@rollbar/react";
 import { getChannelById, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -18,6 +19,7 @@ const RenameChannelModal = ({ handleClose }) => {
   const channel = useSelector(getChannelById(channelId));
   const api = useApiContext();
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   const f = useFormik({
     initialValues: {
@@ -38,6 +40,7 @@ const RenameChannelModal = ({ handleClose }) => {
           f.values.name = filteredName;
           setStatus(e.message);
         } else if (!e.isAxiosError) {
+          rollbar.error(e);
           throw e;
         }
       }

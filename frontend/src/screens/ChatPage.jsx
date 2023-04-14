@@ -5,6 +5,7 @@ import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 import paths from "../paths";
 import { actions } from "../state";
 import ChannelsList from "../components/ChannelsList";
@@ -18,6 +19,7 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const { getAuthHeader, logOut } = useUserContext();
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   useEffect(() => {
     setFetching(true);
@@ -29,6 +31,7 @@ const ChatPage = () => {
         dispatch(actions.setInitialState(res.data));
       } catch (err) {
         if (!err.isAxiosError) {
+          rollbar.error(err);
           toast.error(t("errors.unknown"));
           return;
         }
@@ -37,6 +40,7 @@ const ChatPage = () => {
           logOut();
           navigate(paths.app.loginPagePath);
         } else {
+          rollbar.error(err);
           toast.error(t("errors.network"));
         }
       } finally {

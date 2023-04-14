@@ -6,12 +6,15 @@ import { io } from "socket.io-client";
 import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import leoProfanity from "leo-profanity";
+import { Provider as RollbarProvider } from "@rollbar/react";
 import App from "./App.jsx";
 import reducer, { actions } from "./state";
 import ApiContext from "./contexts/apiContext";
 import resources from "./locales";
 
 const init = async () => {
+  const isProduction = process.env.NODE_ENV === "production";
+
   const socket = io();
 
   const withCheck = (socketFunc) => (...args) => new Promise((resolve, reject) => {
@@ -75,14 +78,23 @@ const init = async () => {
   const ruDict = leoProfanity.getDictionary("ru");
   leoProfanity.add(ruDict);
 
+  const rollbarConfig = {
+    enabled: isProduction,
+    accessToken: process.env.ROLLBAR_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  };
+
   return (
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <ApiContext.Provider value={api}>
-          <App />
-        </ApiContext.Provider>
-      </I18nextProvider>
-    </Provider>
+    <RollbarProvider config={rollbarConfig}>
+      <Provider store={store}>
+        <I18nextProvider i18n={i18n}>
+          <ApiContext.Provider value={api}>
+            <App />
+          </ApiContext.Provider>
+        </I18nextProvider>
+      </Provider>
+    </RollbarProvider>
   );
 };
 

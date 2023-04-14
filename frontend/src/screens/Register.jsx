@@ -5,6 +5,7 @@ import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
+import { useRollbar } from "@rollbar/react";
 import { useUserContext } from "../contexts/userContext";
 import paths from "../paths";
 import avatarImages from "../assets/register_image.jpg";
@@ -30,6 +31,7 @@ const Register = () => {
       .test("confirmPassword", "Пароли должны совпадать", (value, context) => value === context.parent.password),
   });
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   const formik = useFormik({
     initialValues: {
@@ -50,6 +52,7 @@ const Register = () => {
         navigate(paths.app.chatPagePath);
       } catch (err) {
         if (!err.isAxiosError) {
+          rollbar.error(err);
           throw err;
         }
 
@@ -58,6 +61,7 @@ const Register = () => {
           return;
         }
 
+        rollbar.error(err);
         throw err;
       }
     },

@@ -6,6 +6,7 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 import { useApiContext } from "../../../contexts/apiContext";
 
 const RemoveChannelModal = ({ handleClose }) => {
@@ -13,6 +14,7 @@ const RemoveChannelModal = ({ handleClose }) => {
   const api = useApiContext();
   const channelId = useSelector((state) => state.modalState.extra?.channelId);
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   const handleRemove = async () => {
     setLoading(true);
@@ -21,6 +23,7 @@ const RemoveChannelModal = ({ handleClose }) => {
       toast.success(t("channels.removed"));
       handleClose();
     } catch (e) {
+      rollbar.error(e);
       setLoading(false);
     }
   };
