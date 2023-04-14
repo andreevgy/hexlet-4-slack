@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserContext from "../contexts/userContext";
 
 const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
@@ -18,6 +20,7 @@ const UserContextProvider = ({ children }) => {
   const logOut = () => {
     localStorage.removeItem("userData");
     setUser(null);
+    navigate("/login");
   };
 
   const getAuthHeader = () => {
