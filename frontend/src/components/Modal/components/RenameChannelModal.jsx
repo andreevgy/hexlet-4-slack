@@ -1,36 +1,38 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import {
   Modal as BootstrapModal,
   Form,
   Button,
 } from "react-bootstrap";
-import { actions, getChannelsNames } from "../../../state";
+import { getChannelById, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
 
-const AddChannelModal = ({ handleClose }) => {
+const RenameChannelModal = ({ handleClose }) => {
   const channels = useSelector(getChannelsNames);
+  const channelId = useSelector((state) => state.modalState.extra?.channelId);
+  const channel = useSelector(getChannelById(channelId));
   const api = useApiContext();
-  const dispatch = useDispatch();
 
   const f = useFormik({
     initialValues: {
-      name: "",
+      name: channel.name,
     },
     validationSchema: getValidationSchema(channels),
     onSubmit: async ({ name }, { setSubmitting, setStatus }) => {
-      const channel = { name };
+      const data = { name, id: channelId };
       try {
         getValidationSchema(channels).validateSync({ name });
-        const data = await api.createChannel(channel);
-        dispatch(actions.setCurrentChannel({ channelId: data.id }));
+        await api.renameChannel(data);
         handleClose();
       } catch (e) {
         setSubmitting(false);
         if (e.name === "ValidationError") {
           f.values.name = name;
-          setStatus("Ошибка валидации");
+          setStatus(e.message);
+        } else if (!e.isAxiosError) {
+          throw e;
         }
       }
     },
@@ -41,7 +43,7 @@ const AddChannelModal = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Создать канал</BootstrapModal.Title>
+        <BootstrapModal.Title>Переименовать канал</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -62,7 +64,6 @@ const AddChannelModal = ({ handleClose }) => {
               isInvalid={(f.errors.name && f.touched.name) || !!f.status}
               name="name"
               id="name"
-              placeholder="Название канала"
             />
             <label className="visually-hidden" htmlFor="name">Название канала</label>
             <Form.Control.Feedback type="invalid">
@@ -82,7 +83,7 @@ const AddChannelModal = ({ handleClose }) => {
                 type="submit"
                 disabled={f.isSubmitting}
               >
-                Создать
+                Переименовать
               </Button>
             </div>
           </Form.Group>
@@ -92,4 +93,4 @@ const AddChannelModal = ({ handleClose }) => {
   );
 };
 
-export default AddChannelModal;
+export default RenameChannelModal;

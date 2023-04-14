@@ -36,6 +36,7 @@ const init = () => {
     sendMessage: withCheck((...args) => socket.volatile.emit("newMessage", ...args)),
     createChannel: withCheck((...args) => socket.volatile.emit("newChannel", ...args)),
     removeChannel: withCheck((...args) => socket.volatile.emit("removeChannel", ...args)),
+    renameChannel: withCheck((...args) => socket.volatile.emit("renameChannel", ...args)),
   };
 
   const store = configureStore({
@@ -50,6 +51,12 @@ const init = () => {
   });
   socket.on("removeChannel", (payload) => {
     store.dispatch(actions.removeChannel({ channelId: payload.id }));
+  });
+  socket.on("renameChannel", (payload) => {
+    store.dispatch(actions.renameChannel({
+      channelId: payload.id,
+      channelName: payload.name,
+    }));
   });
 
   return (

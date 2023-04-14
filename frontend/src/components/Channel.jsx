@@ -6,6 +6,7 @@ const Channel = ({
   isCurrent,
   handleChoose,
   handleRemove,
+  handleRename,
 }) => {
   const variant = isCurrent ? "secondary" : null;
 
@@ -29,6 +30,7 @@ const Channel = ({
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={handleRemove}>Удалить</Dropdown.Item>
+            <Dropdown.Item onClick={handleRename}>Переименовать</Dropdown.Item>
           </Dropdown.Menu>
         </>
         )}

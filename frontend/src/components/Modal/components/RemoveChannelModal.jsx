@@ -6,7 +6,7 @@ import {
 } from "react-bootstrap";
 import { useApiContext } from "../../../contexts/apiContext";
 
-const RemoveChannelForm = ({ handleClose }) => {
+const RemoveChannelModal = ({ handleClose }) => {
   const [loading, setLoading] = useState(false);
   const api = useApiContext();
   const channelId = useSelector((state) => state.modalState.extra?.channelId);
@@ -58,4 +58,4 @@ const RemoveChannelForm = ({ handleClose }) => {
   );
 };
 
-export default RemoveChannelForm;
+export default RemoveChannelModal;

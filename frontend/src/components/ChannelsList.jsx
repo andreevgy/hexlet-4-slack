@@ -10,14 +10,17 @@ const ChannelsList = () => {
   const { channels, currentChannelId } = useSelector((state) => state.channelsState);
   const dispatch = useDispatch();
 
-  const handleChooseChannel = (channelId) => () => {
+  const handleChoose = (channelId) => () => {
     dispatch(actions.setCurrentChannel({ channelId }));
   };
-  const handleAddChannel = () => {
+  const handleAdd = () => {
     dispatch(actions.openModal({ type: modalTypes.addChannel }));
   };
-  const handleRemoveChannel = (channelId) => () => {
+  const handleRemove = (channelId) => () => {
     dispatch(actions.openModal({ type: modalTypes.removeChannel, extra: { channelId } }));
+  };
+  const handleRename = (channelId) => () => {
+    dispatch(actions.openModal({ type: modalTypes.renameChannel, extra: { channelId } }));
   };
 
   return (
@@ -28,7 +31,7 @@ const ChannelsList = () => {
           type="button"
           variant="group-vertical"
           className="p-0 text-primary"
-          onClick={handleAddChannel}
+          onClick={handleAdd}
         >
           <PlusSquare size={20} />
           <span className="visually-hidden">+</span>
@@ -43,8 +46,9 @@ const ChannelsList = () => {
             key={channel.id}
             channel={channel}
             isCurrent={channel.id === currentChannelId}
-            handleChoose={handleChooseChannel(channel.id)}
-            handleRemove={handleRemoveChannel(channel.id)}
+            handleChoose={handleChoose(channel.id)}
+            handleRemove={handleRemove(channel.id)}
+            handleRename={handleRename(channel.id)}
           />
         ))}
       </ul>

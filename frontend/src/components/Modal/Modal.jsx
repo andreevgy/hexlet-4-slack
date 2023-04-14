@@ -5,15 +5,18 @@ import {
 import { actions } from "../../state";
 import AddChannelModal from "./components/AddChannelModal";
 import RemoveChannelModal from "./components/RemoveChannelModal";
+import RenameChannelModal from "./components/RenameChannelModal";
 
 export const modalTypes = {
   addChannel: "ADD_CHANNEL",
   removeChannel: "REMOVE_CHANNEL",
+  renameChannel: "RENAME_CHANNEL",
 };
 
 const modals = {
   [modalTypes.addChannel]: AddChannelModal,
   [modalTypes.removeChannel]: RemoveChannelModal,
+  [modalTypes.renameChannel]: RenameChannelModal,
 };
 
 const Modal = () => {

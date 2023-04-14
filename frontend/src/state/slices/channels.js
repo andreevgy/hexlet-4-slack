@@ -26,7 +26,11 @@ const slice = createSlice({
         state.currentChannelId = defaultChannelId;
       }
     },
-
+    renameChannel(state, { payload }) {
+      const { channelId, channelName } = payload;
+      const channel = state.channels.find(({ id }) => id === channelId);
+      channel.name = channelName;
+    },
   },
 });
 
