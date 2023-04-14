@@ -5,10 +5,10 @@ import reportWebVitals from "./reportWebVitals";
 import "./assets/app.scss";
 import init from "./init";
 
-const app = () => {
+const app = async () => {
   const root = ReactDOM.createRoot(document.getElementById("root"));
 
-  const appDom = init();
+  const appDom = await init();
 
   root.render(
     <React.StrictMode>

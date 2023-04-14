@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import paths from "../paths";
 import { actions } from "../state";
 import ChannelsList from "../components/ChannelsList";
@@ -15,6 +16,7 @@ const ChatPage = () => {
   const [fetching, setFetching] = useState(true);
   const navigate = useNavigate();
   const { getAuthHeader, logOut } = useUserContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFetching(true);
@@ -41,7 +43,7 @@ const ChatPage = () => {
     ? (
       <div className="h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" role="status" variant="primary">
-          <span className="visually-hidden">Загрузка</span>
+          <span className="visually-hidden">{t("loading")}</span>
         </Spinner>
       </div>
     )

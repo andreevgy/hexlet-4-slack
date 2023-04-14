@@ -4,12 +4,15 @@ import {
   Modal as BootstrapModal,
   Button,
 } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { useApiContext } from "../../../contexts/apiContext";
 
 const RemoveChannelModal = ({ handleClose }) => {
   const [loading, setLoading] = useState(false);
   const api = useApiContext();
   const channelId = useSelector((state) => state.modalState.extra?.channelId);
+  const { t } = useTranslation();
+
   const handleRemove = async () => {
     setLoading(true);
     try {
@@ -23,7 +26,7 @@ const RemoveChannelModal = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Удалить канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t("modals.remove")}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -33,7 +36,7 @@ const RemoveChannelModal = ({ handleClose }) => {
         />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
-        <p className="lead">Подтвердите удаление канала</p>
+        <p className="lead">{t("modals.confirmation")}</p>
         <div className="d-flex justify-content-end">
           <Button
             className="me-2"
@@ -42,7 +45,7 @@ const RemoveChannelModal = ({ handleClose }) => {
             onClick={handleClose}
             disabled={loading}
           >
-            Отменить
+            {t("modals.cancel")}
           </Button>
           <Button
             variant="danger"
@@ -50,7 +53,7 @@ const RemoveChannelModal = ({ handleClose }) => {
             onClick={handleRemove}
             disabled={loading}
           >
-            Подтвердить
+            {t("modals.confirm")}
           </Button>
         </div>
       </BootstrapModal.Body>

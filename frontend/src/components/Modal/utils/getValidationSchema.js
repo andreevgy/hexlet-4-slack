@@ -4,10 +4,10 @@ const getValidationSchema = (channels) => yup.object().shape({
   name: yup
     .string()
     .trim()
-    .required("Укажите название канала")
-    .min(3, "Название канала должно быть больше 3 символов")
-    .max(20, "Название канала должно быть меньше 20 символов")
-    .notOneOf(channels, "Канал с таким названием уже существует"),
+    .required("modals.required")
+    .min(3, "modals.min")
+    .max(20, "modals.max")
+    .notOneOf(channels, "modals.uniq"),
 });
 
 export default getValidationSchema;

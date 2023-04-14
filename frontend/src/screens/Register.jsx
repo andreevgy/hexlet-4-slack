@@ -2,8 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 import { useUserContext } from "../contexts/userContext";
 import paths from "../paths";
 import avatarImages from "../assets/register_image.jpg";
@@ -28,6 +29,7 @@ const Register = () => {
       .string()
       .test("confirmPassword", "Пароли должны совпадать", (value, context) => value === context.parent.password),
   });
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -71,17 +73,17 @@ const Register = () => {
                 <img
                   src={avatarImages}
                   className="rounded-circle"
-                  alt="Регистрация"
+                  alt={t("signup.header")}
                 />
               </div>
               <Form onSubmit={formik.handleSubmit} className="w-50">
-                <h1 className="text-center mb-4">Регистрация</h1>
+                <h1 className="text-center mb-4">{t("signup.header")}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.username}
-                    placeholder="Имя пользователя"
+                    placeholder={t("signup.usernameConstraints")}
                     name="username"
                     id="username"
                     autoComplete="username"
@@ -91,9 +93,9 @@ const Register = () => {
                     }
                     required
                   />
-                  <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                  <Form.Label htmlFor="username">{t("signup.username")}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
-                    {formik.errors.username}
+                    {t(formik.errors.username)}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
@@ -102,7 +104,7 @@ const Register = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
-                    placeholder="Пароль"
+                    placeholder={t("signup.passMin")}
                     name="password"
                     id="password"
                     aria-describedby="passwordHelpBlock"
@@ -114,9 +116,9 @@ const Register = () => {
                     autoComplete="new-password"
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {formik.errors.password}
+                    {t(formik.errors.password)}
                   </Form.Control.Feedback>
-                  <Form.Label htmlFor="password">Пароль</Form.Label>
+                  <Form.Label htmlFor="password">{t("signup.password")}</Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -124,7 +126,7 @@ const Register = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.confirmPassword}
-                    placeholder="Подтверждение пароля"
+                    placeholder={t("signup.mustMatch")}
                     name="confirmPassword"
                     id="confirmPassword"
                     isInvalid={
@@ -136,13 +138,21 @@ const Register = () => {
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
                     {registrationFailed
-                      ? "Имя пользователя уже занято"
-                      : "Пароли не совпадают"}
+                      ? t("signup.alreadyExists")
+                      : t(formik.errors.confirmPassword)}
+
                   </Form.Control.Feedback>
-                  <Form.Label htmlFor="confirmPassword">Подтверждение пароля</Form.Label>
+                  <Form.Label htmlFor="confirmPassword">{t("signup.confirm")}</Form.Label>
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100">Зарегистрироваться</Button>
+                <Button type="submit" variant="outline-primary" className="w-100">{t("signup.submit")}</Button>
               </Form>
+            </div>
+            <div className="card-footer p-4">
+              <div className="text-center">
+                <span>{t("signup.alreadyRegistered")}</span>
+                {" "}
+                <Link to="/login">{t("signup.login")}</Link>
+              </div>
             </div>
           </div>
         </div>

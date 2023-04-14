@@ -5,6 +5,7 @@ import {
   Form,
   Button,
 } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { getChannelById, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -14,6 +15,7 @@ const RenameChannelModal = ({ handleClose }) => {
   const channelId = useSelector((state) => state.modalState.extra?.channelId);
   const channel = useSelector(getChannelById(channelId));
   const api = useApiContext();
+  const { t } = useTranslation();
 
   const f = useFormik({
     initialValues: {
@@ -43,7 +45,7 @@ const RenameChannelModal = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Переименовать канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t("modals.rename")}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -64,8 +66,9 @@ const RenameChannelModal = ({ handleClose }) => {
               isInvalid={(f.errors.name && f.touched.name) || !!f.status}
               name="name"
               id="name"
+              placeholder={t("modals.channelName")}
             />
-            <label className="visually-hidden" htmlFor="name">Название канала</label>
+            <label className="visually-hidden" htmlFor="name">{t("modals.channelName")}</label>
             <Form.Control.Feedback type="invalid">
               {f.errors.name || f.status}
             </Form.Control.Feedback>
@@ -76,14 +79,14 @@ const RenameChannelModal = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                Отмена
+                {t("modals.cancel")}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={f.isSubmitting}
               >
-                Переименовать
+                {t("modals.submit")}
               </Button>
             </div>
           </Form.Group>

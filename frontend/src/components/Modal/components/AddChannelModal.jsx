@@ -5,6 +5,7 @@ import {
   Form,
   Button,
 } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { actions, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -13,6 +14,7 @@ const AddChannelModal = ({ handleClose }) => {
   const channels = useSelector(getChannelsNames);
   const api = useApiContext();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const f = useFormik({
     initialValues: {
@@ -30,7 +32,7 @@ const AddChannelModal = ({ handleClose }) => {
         setSubmitting(false);
         if (e.name === "ValidationError") {
           f.values.name = name;
-          setStatus("Ошибка валидации");
+          setStatus(e.message);
         }
       }
     },
@@ -41,7 +43,7 @@ const AddChannelModal = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Создать канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t("modals.add")}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -62,11 +64,11 @@ const AddChannelModal = ({ handleClose }) => {
               isInvalid={(f.errors.name && f.touched.name) || !!f.status}
               name="name"
               id="name"
-              placeholder="Название канала"
+              placeholder={t("modals.channelName")}
             />
-            <label className="visually-hidden" htmlFor="name">Название канала</label>
+            <label className="visually-hidden" htmlFor="name">{t("modals.channelName")}</label>
             <Form.Control.Feedback type="invalid">
-              {f.errors.name || f.status}
+              {t(f.errors.name) || t(f.status)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button
@@ -75,14 +77,14 @@ const AddChannelModal = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                Отмена
+                {t("modals.cancel")}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={f.isSubmitting}
               >
-                Создать
+                {t("modals.submit")}
               </Button>
             </div>
           </Form.Group>

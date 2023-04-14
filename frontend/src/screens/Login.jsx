@@ -1,8 +1,9 @@
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import paths from "../paths";
 import loginImage from "../assets/login_image.jpg";
 import { useUserContext } from "../contexts/userContext";
@@ -11,6 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isAuthFailed, setIsAuthFailed] = useState(false);
   const { logIn } = useUserContext();
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -22,7 +24,7 @@ const Login = () => {
       try {
         const res = await axios.post(paths.api.loginPath, values);
         logIn(res.data);
-        navigate("/");
+        navigate(paths.app.chatPagePath);
       } catch (err) {
         console.error(err);
         setIsAuthFailed(true);
@@ -40,11 +42,11 @@ const Login = () => {
                 <img
                   src={loginImage}
                   className="rounded-circle"
-                  alt="Войти"
+                  alt={t("login.header")}
                 />
               </div>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t("login.header")}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
@@ -54,9 +56,9 @@ const Login = () => {
                     autoComplete="username"
                     required
                     isInvalid={isAuthFailed}
-                    placeholder="Ваш ник"
+                    placeholder={t("login.username")}
                   />
-                  <label htmlFor="username">Ваш ник</label>
+                  <label htmlFor="username">{t("login.username")}</label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -68,17 +70,24 @@ const Login = () => {
                     autoComplete="current-password"
                     required
                     isInvalid={isAuthFailed}
-                    placeholder="Пароль"
+                    placeholder={t("login.password")}
                   />
-                  <Form.Label htmlFor="password">Пароль</Form.Label>
+                  <Form.Label htmlFor="password">{t("login.password")}</Form.Label>
                   {isAuthFailed && (
                   <Form.Control.Feedback type="invalid" tooltip>
-                    Неверные имя пользователя или пароль
+                    {t("login.authFailed")}
                   </Form.Control.Feedback>
                   )}
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
+                <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t("login.submit")}</Button>
               </Form>
+            </div>
+            <div className="card-footer p-4">
+              <div className="text-center">
+                <span>{t("login.newToChat")}</span>
+                {" "}
+                <Link to="/signup">{t("login.signup")}</Link>
+              </div>
             </div>
           </div>
         </div>

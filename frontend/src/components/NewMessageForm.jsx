@@ -5,11 +5,13 @@ import { ArrowRightSquare } from "react-bootstrap-icons";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { useApiContext } from "../contexts/apiContext";
 import { getCurrentChannel } from "../state";
 import { useUserContext } from "../contexts/userContext";
 
 const NewMessageForm = () => {
+  const { t } = useTranslation();
   const api = useApiContext();
   const channel = useSelector(getCurrentChannel);
   const { user } = useUserContext();
@@ -17,7 +19,7 @@ const NewMessageForm = () => {
     body: yup
       .string()
       .trim()
-      .required("Required"),
+      .required(),
   });
 
   const f = useFormik({
@@ -46,8 +48,8 @@ const NewMessageForm = () => {
       <InputGroup hasValidation={!f.isValid}>
         <Form.Control
           name="body"
-          aria-label="Введите сообщение..."
-          placeholder="Введите сообщение..."
+          aria-label={t("chat.newMessage")}
+          placeholder={t("chat.newMessage")}
           className="border-0 p-0 ps-2"
           onChange={f.handleChange}
           onBlur={f.handleBlur}
@@ -55,7 +57,7 @@ const NewMessageForm = () => {
         />
         <Button variant="group-vertical" type="submit">
           <ArrowRightSquare size={20} />
-          <span className="visually-hidden">Отправить</span>
+          <span className="visually-hidden">{t("chat.send")}</span>
         </Button>
       </InputGroup>
     </Form>
