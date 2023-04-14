@@ -7,6 +7,7 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import leoProfanity from "leo-profanity";
 import { getChannelById, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -24,16 +25,17 @@ const RenameChannelModal = ({ handleClose }) => {
     },
     validationSchema: getValidationSchema(channels),
     onSubmit: async ({ name }, { setSubmitting, setStatus }) => {
-      const data = { name, id: channelId };
+      const filteredName = leoProfanity.clean(name);
+      const data = { name: filteredName, id: channelId };
       try {
-        getValidationSchema(channels).validateSync({ name });
+        getValidationSchema(channels).validateSync({ name: filteredName });
         await api.renameChannel(data);
         toast.success(t("channels.renamed"));
         handleClose();
       } catch (e) {
         setSubmitting(false);
         if (e.name === "ValidationError") {
-          f.values.name = name;
+          f.values.name = filteredName;
           setStatus(e.message);
         } else if (!e.isAxiosError) {
           throw e;

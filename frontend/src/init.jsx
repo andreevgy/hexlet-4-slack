@@ -5,6 +5,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { io } from "socket.io-client";
 import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
+import leoProfanity from "leo-profanity";
 import App from "./App.jsx";
 import reducer, { actions } from "./state";
 import ApiContext from "./contexts/apiContext";
@@ -70,6 +71,9 @@ const init = async () => {
       resources,
       fallbackLng: "ru",
     });
+
+  const ruDict = leoProfanity.getDictionary("ru");
+  leoProfanity.add(ruDict);
 
   return (
     <Provider store={store}>

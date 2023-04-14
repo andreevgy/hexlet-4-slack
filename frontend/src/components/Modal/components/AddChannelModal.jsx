@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { actions, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
+import leoProfanity from "leo-profanity";
 
 const AddChannelModal = ({ handleClose }) => {
   const channels = useSelector(getChannelsNames);
@@ -23,9 +24,10 @@ const AddChannelModal = ({ handleClose }) => {
     },
     validationSchema: getValidationSchema(channels),
     onSubmit: async ({ name }, { setSubmitting, setStatus }) => {
-      const channel = { name };
+      const filteredName = leoProfanity.clean(name);
+      const channel = { name: filteredName };
       try {
-        getValidationSchema(channels).validateSync({ name });
+        getValidationSchema(channels).validateSync(channel);
         const data = await api.createChannel(channel);
         dispatch(actions.setCurrentChannel({ channelId: data.id }));
         toast.success(t("channels.created"));
@@ -33,7 +35,7 @@ const AddChannelModal = ({ handleClose }) => {
       } catch (e) {
         setSubmitting(false);
         if (e.name === "ValidationError") {
-          f.values.name = name;
+          f.values.name = filteredName;
           setStatus(e.message);
         }
       }
