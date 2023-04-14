@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import paths from "../paths";
 import { actions } from "../state";
 import ChannelsList from "../components/ChannelsList";
@@ -27,9 +28,16 @@ const ChatPage = () => {
         });
         dispatch(actions.setInitialState(res.data));
       } catch (err) {
+        if (!err.isAxiosError) {
+          toast.error(t("errors.unknown"));
+          return;
+        }
+
         if (err.response?.status === 401) {
           logOut();
           navigate(paths.app.loginPagePath);
+        } else {
+          toast.error(t("errors.network"));
         }
       } finally {
         setFetching(false);

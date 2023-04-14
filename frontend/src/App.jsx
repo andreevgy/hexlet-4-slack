@@ -3,6 +3,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
 import ChatPage from "./screens/ChatPage";
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<ChatPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ToastContainer />
       </div>
     </UserContextProvider>
   </Router>

@@ -5,6 +5,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { useApiContext } from "../../../contexts/apiContext";
 
 const RemoveChannelModal = ({ handleClose }) => {
@@ -17,6 +18,7 @@ const RemoveChannelModal = ({ handleClose }) => {
     setLoading(true);
     try {
       await api.removeChannel({ id: channelId });
+      toast.success(t("channels.removed"));
       handleClose();
     } catch (e) {
       setLoading(false);

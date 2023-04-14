@@ -6,6 +6,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { getChannelById, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -27,6 +28,7 @@ const RenameChannelModal = ({ handleClose }) => {
       try {
         getValidationSchema(channels).validateSync({ name });
         await api.renameChannel(data);
+        toast.success(t("channels.renamed"));
         handleClose();
       } catch (e) {
         setSubmitting(false);

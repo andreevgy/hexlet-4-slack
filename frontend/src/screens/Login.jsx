@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import paths from "../paths";
 import loginImage from "../assets/login_image.jpg";
 import { useUserContext } from "../contexts/userContext";
@@ -27,7 +28,16 @@ const Login = () => {
         navigate(paths.app.chatPagePath);
       } catch (err) {
         console.error(err);
-        setIsAuthFailed(true);
+        if (!err.isAxiosError) {
+          toast.error(t("errors.unknown"));
+          return;
+        }
+
+        if (err.response?.status === 401) {
+          setIsAuthFailed(true);
+        } else {
+          toast.error(t("errors.network"));
+        }
       }
     },
   });

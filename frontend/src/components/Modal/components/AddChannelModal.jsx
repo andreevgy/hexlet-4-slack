@@ -6,6 +6,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { actions, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -27,6 +28,7 @@ const AddChannelModal = ({ handleClose }) => {
         getValidationSchema(channels).validateSync({ name });
         const data = await api.createChannel(channel);
         dispatch(actions.setCurrentChannel({ channelId: data.id }));
+        toast.success(t("channels.created"));
         handleClose();
       } catch (e) {
         setSubmitting(false);
