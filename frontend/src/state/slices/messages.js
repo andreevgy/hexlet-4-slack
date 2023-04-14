@@ -1,9 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
-import { actions as channelsActions } from "./channels.js";
+import { actions as channelsActions } from './channels.js';
 
 const slice = createSlice({
-  name: "messagesState",
+  name: 'messagesState',
   initialState: { messages: [] },
   reducers: {
     addMessage(state, { payload }) {

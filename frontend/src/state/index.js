@@ -1,7 +1,7 @@
-import slices from "./slices";
+import slices from './slices';
 
-export { actions } from "./slices";
+export { actions } from './slices';
 
-export * from "./selectors";
+export * from './selectors';
 
 export default slices;

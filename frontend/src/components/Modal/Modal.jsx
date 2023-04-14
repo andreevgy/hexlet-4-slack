@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Modal as BootstrapModal,
-} from "react-bootstrap";
-import { actions } from "../../state";
-import AddChannelModal from "./components/AddChannelModal";
-import RemoveChannelModal from "./components/RemoveChannelModal";
-import RenameChannelModal from "./components/RenameChannelModal";
+} from 'react-bootstrap';
+import { actions } from '../../state';
+import AddChannelModal from './components/AddChannelModal';
+import RemoveChannelModal from './components/RemoveChannelModal';
+import RenameChannelModal from './components/RenameChannelModal';
 
 export const modalTypes = {
-  addChannel: "ADD_CHANNEL",
-  removeChannel: "REMOVE_CHANNEL",
-  renameChannel: "RENAME_CHANNEL",
+  addChannel: 'ADD_CHANNEL',
+  removeChannel: 'REMOVE_CHANNEL',
+  renameChannel: 'RENAME_CHANNEL',
 };
 
 const modals = {

@@ -1,17 +1,17 @@
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Spinner from "react-bootstrap/Spinner";
-import axios from "axios";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import { useRollbar } from "@rollbar/react";
-import paths from "../paths";
-import { actions } from "../state";
-import ChannelsList from "../components/ChannelsList";
-import ChatBox from "../components/ChatBox";
-import { useUserContext } from "../contexts/userContext";
-import Modal from "../components/Modal";
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
+import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
+import paths from '../paths';
+import { actions } from '../state';
+import ChannelsList from '../components/ChannelsList';
+import ChatBox from '../components/ChatBox';
+import { useUserContext } from '../contexts/userContext';
+import Modal from '../components/Modal';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const ChatPage = () => {
       } catch (err) {
         if (!err.isAxiosError) {
           rollbar.error(err);
-          toast.error(t("errors.unknown"));
+          toast.error(t('errors.unknown'));
           return;
         }
 
@@ -41,7 +41,7 @@ const ChatPage = () => {
           navigate(paths.app.loginPagePath);
         } else {
           rollbar.error(err);
-          toast.error(t("errors.network"));
+          toast.error(t('errors.network'));
         }
       } finally {
         setFetching(false);
@@ -56,7 +56,7 @@ const ChatPage = () => {
     ? (
       <div className="h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" role="status" variant="primary">
-          <span className="visually-hidden">{t("loading")}</span>
+          <span className="visually-hidden">{t('loading')}</span>
         </Spinner>
       </div>
     )

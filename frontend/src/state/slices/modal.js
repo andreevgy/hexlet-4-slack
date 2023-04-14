@@ -1,7 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "modalState",
+  name: 'modalState',
   initialState: {
     isOpened: false,
     type: null,

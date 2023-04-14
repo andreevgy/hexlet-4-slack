@@ -1,4 +1,4 @@
-const apiPath = "/api/v1";
+const apiPath = '/api/v1';
 
 export default {
   api: {
@@ -7,8 +7,8 @@ export default {
     dataPath: `${apiPath}/data`,
   },
   app: {
-    chatPagePath: "/",
-    loginPagePath: "/login",
-    signupPagePath: "/signup",
+    chatPagePath: '/',
+    loginPagePath: '/login',
+    signupPagePath: '/signup',
   },
 };

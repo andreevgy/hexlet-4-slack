@@ -1,18 +1,18 @@
-import { useSelector } from "react-redux";
-import { useFormik } from "formik";
+import { useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 import {
   Modal as BootstrapModal,
   Form,
   Button,
-} from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import leoProfanity from "leo-profanity";
-import { useRollbar } from "@rollbar/react";
-import { useEffect, useRef } from "react";
-import { getChannelById, getChannelsNames } from "../../../state";
-import { useApiContext } from "../../../contexts/apiContext";
-import getValidationSchema from "../utils/getValidationSchema";
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
+import { useEffect, useRef } from 'react';
+import { getChannelById, getChannelsNames } from '../../../state';
+import { useApiContext } from '../../../contexts/apiContext';
+import getValidationSchema from '../utils/getValidationSchema';
 
 const RenameChannelModal = ({ handleClose }) => {
   const channels = useSelector(getChannelsNames);
@@ -38,11 +38,11 @@ const RenameChannelModal = ({ handleClose }) => {
       try {
         getValidationSchema(channels).validateSync({ name: filteredName });
         await api.renameChannel(data);
-        toast.success(t("channels.renamed"));
+        toast.success(t('channels.renamed'));
         handleClose();
       } catch (e) {
         setSubmitting(false);
-        if (e.name === "ValidationError") {
+        if (e.name === 'ValidationError') {
           f.values.name = filteredName;
           setStatus(e.message);
           channelNameRef.current.focus();
@@ -59,7 +59,7 @@ const RenameChannelModal = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>{t("modals.rename")}</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.rename')}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -81,9 +81,9 @@ const RenameChannelModal = ({ handleClose }) => {
               name="name"
               id="name"
               ref={channelNameRef}
-              placeholder={t("modals.channelName")}
+              placeholder={t('modals.channelName')}
             />
-            <label className="visually-hidden" htmlFor="name">{t("modals.channelName")}</label>
+            <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
             <Form.Control.Feedback type="invalid">
               {t(f.errors.name) || (f.status)}
             </Form.Control.Feedback>
@@ -94,14 +94,14 @@ const RenameChannelModal = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                {t("modals.cancel")}
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={f.isSubmitting}
               >
-                {t("modals.submit")}
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>

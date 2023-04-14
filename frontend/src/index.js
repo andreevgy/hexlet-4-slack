@@ -1,12 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import reportWebVitals from "./reportWebVitals";
-import "./assets/app.scss";
-import init from "./init";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
+import './assets/app.scss';
+import init from './init';
 
 const app = async () => {
-  const root = ReactDOM.createRoot(document.getElementById("root"));
+  const root = ReactDOM.createRoot(document.getElementById('root'));
 
   const appDom = await init();
 

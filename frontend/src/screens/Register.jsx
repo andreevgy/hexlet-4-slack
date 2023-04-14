@@ -1,31 +1,31 @@
-import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { useFormik } from "formik";
-import { Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import * as yup from "yup";
-import { useTranslation } from "react-i18next";
-import { useRollbar } from "@rollbar/react";
-import { useUserContext } from "../contexts/userContext";
-import paths from "../paths";
-import avatarImages from "../assets/register_image.jpg";
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
+import { useFormik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
+import { useUserContext } from '../contexts/userContext';
+import paths from '../paths';
+import avatarImages from '../assets/register_image.jpg';
 
 const validationSchema = yup.object().shape({
   // TODO: rewrite to setLocale
   username: yup
     .string()
     .trim()
-    .required("signup.required")
-    .min(3, "signup.usernameConstraints")
-    .max(20, "signup.usernameConstraints"),
+    .required('signup.required')
+    .min(3, 'signup.usernameConstraints')
+    .max(20, 'signup.usernameConstraints'),
   password: yup
     .string()
     .trim()
-    .required("signup.required")
-    .min(6, "signup.passMin"),
+    .required('signup.required')
+    .min(6, 'signup.passMin'),
   confirmPassword: yup
     .string()
-    .test("confirmPassword", "signup.mustMatch", (value, context) => value === context.parent.password),
+    .test('confirmPassword', 'signup.mustMatch', (value, context) => value === context.parent.password),
 });
 
 const Register = () => {
@@ -42,9 +42,9 @@ const Register = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
-      confirmPassword: "",
+      username: '',
+      password: '',
+      confirmPassword: '',
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -85,17 +85,17 @@ const Register = () => {
                 <img
                   src={avatarImages}
                   className="rounded-circle"
-                  alt={t("signup.header")}
+                  alt={t('signup.header')}
                 />
               </div>
               <Form onSubmit={formik.handleSubmit} className="w-50">
-                <h1 className="text-center mb-4">{t("signup.header")}</h1>
+                <h1 className="text-center mb-4">{t('signup.header')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.username}
-                    placeholder={t("signup.usernameConstraints")}
+                    placeholder={t('signup.usernameConstraints')}
                     name="username"
                     id="username"
                     autoComplete="username"
@@ -106,7 +106,7 @@ const Register = () => {
                     }
                     required
                   />
-                  <Form.Label htmlFor="username">{t("signup.username")}</Form.Label>
+                  <Form.Label htmlFor="username">{t('signup.username')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
                     {t(formik.errors.username)}
                   </Form.Control.Feedback>
@@ -117,7 +117,7 @@ const Register = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
-                    placeholder={t("signup.passMin")}
+                    placeholder={t('signup.passMin')}
                     name="password"
                     id="password"
                     aria-describedby="passwordHelpBlock"
@@ -131,7 +131,7 @@ const Register = () => {
                   <Form.Control.Feedback type="invalid" tooltip>
                     {t(formik.errors.password)}
                   </Form.Control.Feedback>
-                  <Form.Label htmlFor="password">{t("signup.password")}</Form.Label>
+                  <Form.Label htmlFor="password">{t('signup.password')}</Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -139,7 +139,7 @@ const Register = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.confirmPassword}
-                    placeholder={t("signup.mustMatch")}
+                    placeholder={t('signup.mustMatch')}
                     name="confirmPassword"
                     id="confirmPassword"
                     isInvalid={
@@ -151,20 +151,20 @@ const Register = () => {
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
                     {registrationFailed
-                      ? t("signup.alreadyExists")
+                      ? t('signup.alreadyExists')
                       : t(formik.errors.confirmPassword)}
 
                   </Form.Control.Feedback>
-                  <Form.Label htmlFor="confirmPassword">{t("signup.confirm")}</Form.Label>
+                  <Form.Label htmlFor="confirmPassword">{t('signup.confirm')}</Form.Label>
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100">{t("signup.submit")}</Button>
+                <Button type="submit" variant="outline-primary" className="w-100">{t('signup.submit')}</Button>
               </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{t("signup.alreadyRegistered")}</span>
-                {" "}
-                <Link to="/login">{t("signup.login")}</Link>
+                <span>{t('signup.alreadyRegistered')}</span>
+                {' '}
+                <Link to="/login">{t('signup.login')}</Link>
               </div>
             </div>
           </div>

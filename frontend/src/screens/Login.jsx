@@ -1,14 +1,14 @@
-import { useFormik } from "formik";
-import { Button, Form } from "react-bootstrap";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import { useRollbar } from "@rollbar/react";
-import paths from "../paths";
-import loginImage from "../assets/login_image.jpg";
-import { useUserContext } from "../contexts/userContext";
+import { useFormik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
+import paths from '../paths';
+import loginImage from '../assets/login_image.jpg';
+import { useUserContext } from '../contexts/userContext';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     onSubmit: async (values) => {
       setIsAuthFailed(false);
@@ -37,7 +37,7 @@ const Login = () => {
         usernameRef.current.focus();
         if (!err.isAxiosError) {
           rollbar.error(err);
-          toast.error(t("errors.unknown"));
+          toast.error(t('errors.unknown'));
           return;
         }
 
@@ -45,7 +45,7 @@ const Login = () => {
           setIsAuthFailed(true);
         } else {
           rollbar.error(err);
-          toast.error(t("errors.network"));
+          toast.error(t('errors.network'));
         }
       }
     },
@@ -61,11 +61,11 @@ const Login = () => {
                 <img
                   src={loginImage}
                   className="rounded-circle"
-                  alt={t("login.header")}
+                  alt={t('login.header')}
                 />
               </div>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-                <h1 className="text-center mb-4">{t("login.header")}</h1>
+                <h1 className="text-center mb-4">{t('login.header')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
@@ -76,9 +76,9 @@ const Login = () => {
                     required
                     isInvalid={isAuthFailed}
                     ref={usernameRef}
-                    placeholder={t("login.username")}
+                    placeholder={t('login.username')}
                   />
-                  <label htmlFor="username">{t("login.username")}</label>
+                  <label htmlFor="username">{t('login.username')}</label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -90,23 +90,23 @@ const Login = () => {
                     autoComplete="current-password"
                     required
                     isInvalid={isAuthFailed}
-                    placeholder={t("login.password")}
+                    placeholder={t('login.password')}
                   />
-                  <Form.Label htmlFor="password">{t("login.password")}</Form.Label>
+                  <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
                   {isAuthFailed && (
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {t("login.authFailed")}
+                    {t('login.authFailed')}
                   </Form.Control.Feedback>
                   )}
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t("login.submit")}</Button>
+                <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('login.submit')}</Button>
               </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{t("login.newToChat")}</span>
-                {" "}
-                <Link to="/signup">{t("login.signup")}</Link>
+                <span>{t('login.newToChat')}</span>
+                {' '}
+                <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </div>
           </div>

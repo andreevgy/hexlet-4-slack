@@ -1,18 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 import {
   Modal as BootstrapModal,
   Form,
   Button,
-} from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import leoProfanity from "leo-profanity";
-import { useRollbar } from "@rollbar/react";
-import { useEffect, useRef } from "react";
-import { actions, getChannelsNames } from "../../../state";
-import { useApiContext } from "../../../contexts/apiContext";
-import getValidationSchema from "../utils/getValidationSchema";
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
+import { useEffect, useRef } from 'react';
+import { actions, getChannelsNames } from '../../../state';
+import { useApiContext } from '../../../contexts/apiContext';
+import getValidationSchema from '../utils/getValidationSchema';
 
 const AddChannelModal = ({ handleClose }) => {
   const channels = useSelector(getChannelsNames);
@@ -28,7 +28,7 @@ const AddChannelModal = ({ handleClose }) => {
 
   const f = useFormik({
     initialValues: {
-      name: "",
+      name: '',
     },
     validationSchema: getValidationSchema(channels),
     onSubmit: async ({ name }, { setSubmitting, setStatus }) => {
@@ -38,13 +38,13 @@ const AddChannelModal = ({ handleClose }) => {
         getValidationSchema(channels).validateSync(channel);
         const data = await api.createChannel(channel);
         dispatch(actions.setCurrentChannel({ channelId: data.id }));
-        toast.success(t("channels.created"));
+        toast.success(t('channels.created'));
         handleClose();
       } catch (e) {
         rollbar.error(e);
         setSubmitting(false);
         channelNameRef.current.focus();
-        if (e.name === "ValidationError") {
+        if (e.name === 'ValidationError') {
           f.values.name = filteredName;
           setStatus(e.message);
         } else if (!e.isAxiosError) {
@@ -60,7 +60,7 @@ const AddChannelModal = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>{t("modals.add")}</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.add')}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -82,9 +82,9 @@ const AddChannelModal = ({ handleClose }) => {
               name="name"
               ref={channelNameRef}
               id="name"
-              placeholder={t("modals.channelName")}
+              placeholder={t('modals.channelName')}
             />
-            <label className="visually-hidden" htmlFor="name">{t("modals.channelName")}</label>
+            <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
             <Form.Control.Feedback type="invalid">
               {t(f.errors.name) || t(f.status)}
             </Form.Control.Feedback>
@@ -95,14 +95,14 @@ const AddChannelModal = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                {t("modals.cancel")}
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={f.isSubmitting}
               >
-                {t("modals.submit")}
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>

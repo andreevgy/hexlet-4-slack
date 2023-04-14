@@ -1,18 +1,18 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-import { useTranslation } from "react-i18next";
-import { animateScroll } from "react-scroll";
-import { getCurrentChannel, getMessagesForCurrentChannel } from "../state";
-import NewMessageForm from "./NewMessageForm.jsx";
-import Message from "./Message";
+import { useTranslation } from 'react-i18next';
+import { animateScroll } from 'react-scroll';
+import { getCurrentChannel, getMessagesForCurrentChannel } from '../state';
+import NewMessageForm from './NewMessageForm.jsx';
+import Message from './Message';
 
 const ChatBox = () => {
   const channel = useSelector(getCurrentChannel);
   const messages = useSelector(getMessagesForCurrentChannel);
   const { t } = useTranslation();
   useEffect(() => {
-    animateScroll.scrollToBottom({ containerId: "messages-box", delay: 0, duration: 0 });
+    animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
   }, [messages.length]);
 
   return (
@@ -24,7 +24,7 @@ const ChatBox = () => {
           </b>
         </p>
         <span className="text-muted">
-          {`${messages.length} ${t("chat.messageCount", { count: messages.length })}`}
+          {`${messages.length} ${t('chat.messageCount', { count: messages.length })}`}
         </span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5 ">
