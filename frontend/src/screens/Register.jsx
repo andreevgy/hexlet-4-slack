@@ -10,26 +10,28 @@ import { useUserContext } from "../contexts/userContext";
 import paths from "../paths";
 import avatarImages from "../assets/register_image.jpg";
 
+const validationSchema = yup.object().shape({
+  // TODO: rewrite to setLocale
+  username: yup
+    .string()
+    .trim()
+    .required("signup.required")
+    .min(3, "signup.usernameConstraints")
+    .max(20, "signup.usernameConstraints"),
+  password: yup
+    .string()
+    .trim()
+    .required("signup.required")
+    .min(6, "signup.passMin"),
+  confirmPassword: yup
+    .string()
+    .test("confirmPassword", "signup.mustMatch", (value, context) => value === context.parent.password),
+});
+
 const Register = () => {
   const { logIn } = useUserContext();
   const [registrationFailed, setRegistrationFailed] = useState(false);
   const navigate = useNavigate();
-  const validationSchema = yup.object().shape({
-    username: yup
-      .string()
-      .trim()
-      .required("Обязательное поле")
-      .min(3, "Имя пользователя должно быть минимум 3 символа")
-      .max(20, "Имя пользователя должно быть максимум 20 символов"),
-    password: yup
-      .string()
-      .trim()
-      .required("Обязательное поле")
-      .min(6, "Пароль должен быть минимум 6 символом"),
-    confirmPassword: yup
-      .string()
-      .test("confirmPassword", "Пароли должны совпадать", (value, context) => value === context.parent.password),
-  });
   const { t } = useTranslation();
   const rollbar = useRollbar();
   const usernameRef = useRef(null);
