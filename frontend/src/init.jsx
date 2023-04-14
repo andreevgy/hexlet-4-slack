@@ -11,7 +11,8 @@ const init = () => {
   const socket = io();
 
   const withCheck = (socketFunc) => (...args) => new Promise((resolve, reject) => {
-    let state = 'pending'; // eslint-disable-line
+    // eslint-disable-next-line functional/no-let
+    let state = "pending";
     const timer = setTimeout(() => {
       state = "rejected";
       reject();
@@ -33,6 +34,7 @@ const init = () => {
 
   const api = {
     sendMessage: withCheck((...args) => socket.volatile.emit("newMessage", ...args)),
+    createChannel: withCheck((...args) => socket.volatile.emit("newChannel", ...args)),
   };
 
   const store = configureStore({
@@ -41,6 +43,9 @@ const init = () => {
 
   socket.on("newMessage", (payload) => {
     store.dispatch(actions.addMessage({ message: payload }));
+  });
+  socket.on("newChannel", (payload) => {
+    store.dispatch(actions.addChannel({ channel: payload }));
   });
 
   return (
