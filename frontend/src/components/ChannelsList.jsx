@@ -16,6 +16,9 @@ const ChannelsList = () => {
   const handleAddChannel = () => {
     dispatch(actions.openModal({ type: modalTypes.addChannel }));
   };
+  const handleRemoveChannel = (channelId) => () => {
+    dispatch(actions.openModal({ type: modalTypes.removeChannel, extra: { channelId } }));
+  };
 
   return (
     <>
@@ -41,6 +44,7 @@ const ChannelsList = () => {
             channel={channel}
             isCurrent={channel.id === currentChannelId}
             handleChoose={handleChooseChannel(channel.id)}
+            handleRemove={handleRemoveChannel(channel.id)}
           />
         ))}
       </ul>
