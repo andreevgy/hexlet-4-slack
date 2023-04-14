@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { ArrowRightSquare } from "react-bootstrap-icons";
 
@@ -24,6 +24,11 @@ const NewMessageForm = () => {
       .required(),
   });
   const rollbar = useRollbar();
+  const newMessageRef = useRef(null);
+
+  useEffect(() => {
+    newMessageRef.current.focus();
+  }, [channel]);
 
   const f = useFormik({
     initialValues: { body: "" },
@@ -43,8 +48,10 @@ const NewMessageForm = () => {
       } catch (err) {
         rollbar.error(err);
         console.error(err);
+      } finally {
+        f.setSubmitting(false);
+        newMessageRef.current.focus();
       }
-      f.setSubmitting(false);
     },
     validateOnBlur: false,
   });
@@ -60,6 +67,7 @@ const NewMessageForm = () => {
           onChange={f.handleChange}
           onBlur={f.handleBlur}
           value={f.values.body}
+          ref={newMessageRef}
         />
         <Button variant="group-vertical" type="submit">
           <ArrowRightSquare size={20} />

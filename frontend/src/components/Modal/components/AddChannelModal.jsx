@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import leoProfanity from "leo-profanity";
 import { useRollbar } from "@rollbar/react";
+import { useEffect, useRef } from "react";
 import { actions, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -19,6 +20,11 @@ const AddChannelModal = ({ handleClose }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const rollbar = useRollbar();
+  const channelNameRef = useRef(null);
+
+  useEffect(() => {
+    channelNameRef.current.focus();
+  }, []);
 
   const f = useFormik({
     initialValues: {
@@ -37,6 +43,7 @@ const AddChannelModal = ({ handleClose }) => {
       } catch (e) {
         rollbar.error(e);
         setSubmitting(false);
+        channelNameRef.current.focus();
         if (e.name === "ValidationError") {
           f.values.name = filteredName;
           setStatus(e.message);
@@ -73,6 +80,7 @@ const AddChannelModal = ({ handleClose }) => {
               value={f.values.name}
               isInvalid={(f.errors.name && f.touched.name) || !!f.status}
               name="name"
+              ref={channelNameRef}
               id="name"
               placeholder={t("modals.channelName")}
             />

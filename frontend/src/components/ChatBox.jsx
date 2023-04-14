@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { useTranslation } from "react-i18next";
+import { animateScroll } from "react-scroll";
 import { getCurrentChannel, getMessagesForCurrentChannel } from "../state";
 import NewMessageForm from "./NewMessageForm.jsx";
 import Message from "./Message";
@@ -10,6 +11,9 @@ const ChatBox = () => {
   const channel = useSelector(getCurrentChannel);
   const messages = useSelector(getMessagesForCurrentChannel);
   const { t } = useTranslation();
+  useEffect(() => {
+    animateScroll.scrollToBottom({ containerId: "messages-box", delay: 0, duration: 0 });
+  }, [messages.length]);
 
   return (
     <div className="d-flex flex-column h-100">

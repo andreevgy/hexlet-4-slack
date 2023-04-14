@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import leoProfanity from "leo-profanity";
 import { useRollbar } from "@rollbar/react";
+import { useEffect, useRef } from "react";
 import { getChannelById, getChannelsNames } from "../../../state";
 import { useApiContext } from "../../../contexts/apiContext";
 import getValidationSchema from "../utils/getValidationSchema";
@@ -20,6 +21,11 @@ const RenameChannelModal = ({ handleClose }) => {
   const api = useApiContext();
   const { t } = useTranslation();
   const rollbar = useRollbar();
+  const channelNameRef = useRef(null);
+
+  useEffect(() => {
+    channelNameRef.current.focus();
+  }, []);
 
   const f = useFormik({
     initialValues: {
@@ -39,6 +45,7 @@ const RenameChannelModal = ({ handleClose }) => {
         if (e.name === "ValidationError") {
           f.values.name = filteredName;
           setStatus(e.message);
+          channelNameRef.current.focus();
         } else if (!e.isAxiosError) {
           rollbar.error(e);
           throw e;
@@ -73,11 +80,12 @@ const RenameChannelModal = ({ handleClose }) => {
               isInvalid={(f.errors.name && f.touched.name) || !!f.status}
               name="name"
               id="name"
+              ref={channelNameRef}
               placeholder={t("modals.channelName")}
             />
             <label className="visually-hidden" htmlFor="name">{t("modals.channelName")}</label>
             <Form.Control.Feedback type="invalid">
-              {f.errors.name || f.status}
+              {t(f.errors.name) || (f.status)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,6 +32,11 @@ const Register = () => {
   });
   const { t } = useTranslation();
   const rollbar = useRollbar();
+  const usernameRef = useRef(null);
+
+  useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -51,6 +56,7 @@ const Register = () => {
         logIn(res.data);
         navigate(paths.app.chatPagePath);
       } catch (err) {
+        usernameRef.current.focus();
         if (!err.isAxiosError) {
           rollbar.error(err);
           throw err;
@@ -91,6 +97,7 @@ const Register = () => {
                     name="username"
                     id="username"
                     autoComplete="username"
+                    ref={usernameRef}
                     isInvalid={
                       (formik.errors.username && formik.touched.username)
                       || registrationFailed

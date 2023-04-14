@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { useRollbar } from "@rollbar/react";
@@ -16,6 +16,11 @@ const Login = () => {
   const { logIn } = useUserContext();
   const { t } = useTranslation();
   const rollbar = useRollbar();
+  const usernameRef = useRef(null);
+
+  useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -29,6 +34,7 @@ const Login = () => {
         logIn(res.data);
         navigate(paths.app.chatPagePath);
       } catch (err) {
+        usernameRef.current.focus();
         if (!err.isAxiosError) {
           rollbar.error(err);
           toast.error(t("errors.unknown"));
@@ -69,6 +75,7 @@ const Login = () => {
                     autoComplete="username"
                     required
                     isInvalid={isAuthFailed}
+                    ref={usernameRef}
                     placeholder={t("login.username")}
                   />
                   <label htmlFor="username">{t("login.username")}</label>
